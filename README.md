@@ -519,3 +519,81 @@ server1.tp6.b1.         604800  IN      A       10.6.202.10
 ```
 ---
 ## V. Serveur NTP
+
+* Vérifications état de la synchronisation NTP sur le `server1`
+
+```bash
+[remi@server1 etc]$ chronyc sources
+210 Number of sources = 3
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^? 195.154.41.195                2   6     1     3  -2658ms[-2658ms] +/-   55ms
+^? 51.15.182.163                 2   6     1     4  -2662ms[-2662ms] +/-   68ms
+^? cluster010.linocomm.net       2   6     1     5  -2657ms[-2657ms] +/-   38ms
+[remi@server1 etc]$ chronyc tracking
+Reference ID    : 7F7F0101 ()
+Stratum         : 10
+Ref time (UTC)  : Fri Mar 15 10:58:14 2019
+System time     : 0.000000000 seconds fast of NTP time
+Last offset     : +0.000000000 seconds
+RMS offset      : 0.000000000 seconds
+Frequency       : 0.000 ppm slow
+Residual freq   : +0.000 ppm
+Skew            : 0.000 ppm
+Root delay      : 0.000000000 seconds
+Root dispersion : 0.000000000 seconds
+Update interval : 0.0 seconds
+Leap status     : Normal
+```
+* Vérification état de la synchronisation NTP sur le `client1`
+
+```bash
+[remi@client1 ~]$ chronyc sources
+210 Number of sources = 1
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* server1                       3   7   377    94    -13ms[  -12ms] +/-   65ms
+[remi@client1 ~]$ chronyc tracking
+Reference ID    : 0A06CA0A (server1)
+Stratum         : 4
+Ref time (UTC)  : Sun Mar 17 19:38:03 2019
+System time     : 0.000877020 seconds fast of NTP time
+Last offset     : +0.000998453 seconds
+RMS offset      : 0.227384850 seconds
+Frequency       : 7.671 ppm fast
+Residual freq   : +0.112 ppm
+Skew            : 19.082 ppm
+Root delay      : 0.104019709 seconds
+Root dispersion : 0.008999578 seconds
+Update interval : 130.2 seconds
+Leap status     : Normal
+```
+
+* Vérification état de la synchronisation NTP sur le `client2`
+
+```bash
+
+[remi@client2 etc]$ chronyc sources
+210 Number of sources = 4
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^- 213.251.53.11                 2   8   377   101    -11ms[  -11ms] +/-   89ms
+^+ genesis01.midways-networ>     2   8   377   231  -1076us[-1076us] +/-   42ms
+^+ clients6.arcanite.ch          2   8   375    95    +12ms[  +12ms] +/-   86ms
+^* cluster009.linocomm.net       2   8   377   681  -3901us[-4293us] +/-   29ms
+[remi@client2 etc]$ chronyc tracking
+Reference ID    : 5B795BA7 (cluster009.linocomm.net)
+Stratum         : 3
+Ref time (UTC)  : Sun Mar 17 19:29:33 2019
+System time     : 0.000154373 seconds slow of NTP time
+Last offset     : -0.000391279 seconds
+RMS offset      : 0.005216185 seconds
+Frequency       : 3.567 ppm fast
+Residual freq   : -0.065 ppm
+Skew            : 4.656 ppm
+Root delay      : 0.055999756 seconds
+Root dispersion : 0.004530263 seconds
+Update interval : 129.6 seconds
+Leap status     : Normal
+[remi@client2 etc]$
+```
